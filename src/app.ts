@@ -2,11 +2,8 @@ import * as express from "express";
 import * as cookieParser from "cookie-parser";
 import * as morgan from "morgan";
 import * as helmet from "helmet";
+import router from "./api";
 
-import testRouter from "./api/router/test";
-import { getChart } from "./services/getChart";
-
-getChart();
 const app = express();
 
 /**
@@ -46,7 +43,7 @@ app.use((req, res, next) => {
       res.set("Access-Control-Allow-Origin", req.headers.origin);
     }
 
-    if (req.method == "OPTIONS") {
+    if (req.method === "OPTIONS") {
       res.send();
       return;
     }
@@ -58,8 +55,7 @@ app.use((req, res, next) => {
  * Router
  */
 const BASE_PATH = "/v1/api";
-
-app.use(BASE_PATH, testRouter);
+app.use(BASE_PATH, router());
 
 const appServer = app.listen(process.env.production ? 80 : 3000, () => {
   console.log(
